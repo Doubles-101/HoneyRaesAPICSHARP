@@ -1,0 +1,6 @@
+@HoneyRaesAPICSHARP_HostAddress = http://localhost:5267
+
+GET {{HoneyRaesAPICSHARP_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
