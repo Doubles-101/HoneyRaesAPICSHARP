@@ -1,4 +1,5 @@
 using HoneyRaesAPICSHARP.Models;
+using HoneyRaesAPICSHARP.Models.DTOs;
 List<Customer> customers = new List<Customer>
 {
     new Customer { Id = 1, Name = "Alice Johnson", Address = "123 Main St" },
@@ -82,6 +83,96 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+
+// Customer GETs
+app.MapGet("/customers", () =>
+{
+    return customers.Select(t => new CustomerDTO 
+    {
+        Id = t.Id,
+        Name = t.Name,
+        Address = t.Address
+    });
+});
+
+app.MapGet("/customers/{id}", (int id) => {
+    Customer customer = customers.FirstOrDefault(e => e.Id == id);
+    if (customer == null)
+    {
+        return Results.NotFound();
+    }
+    return Results.Ok(new CustomerDTO
+    {
+        Id = customer.Id,
+        Name = customer.Name,
+        Address = customer.Address
+    });
+});
+
+
+
+
+// Employee GETs
+app.MapGet("/employees", () =>
+{
+    return employees.Select(t => new EmployeeDTO 
+    {
+        Id = t.Id,
+        Name = t.Name,
+        Specialty = t.Specialty
+    });
+});
+
+app.MapGet("/employees/{id}", (int id) =>
+{
+    Employee employee = employees.FirstOrDefault(e => e.Id == id);
+    if (employee == null)
+    {
+        return Results.NotFound();
+    }
+    return Results.Ok(new EmployeeDTO
+    {
+        Id = employee.Id,
+        Name = employee.Name,
+        Specialty = employee.Specialty
+    });
+});
+
+
+
+
+// Service Ticket GETs
+app.MapGet("/servicetickets", () =>
+{
+    return serviceTickets.Select(t => new ServiceTicketDTO
+    {
+        Id = t.Id,
+        CustomerId = t.CustomerId,
+        EmployeeId = t.EmployeeId,
+        Description = t.Description,
+        Emergency = t.Emergency,
+        DateCompleted = t.DateCompleted
+    });
+});
+
+app.MapGet("/servicetickets/{id}", (int id) =>
+{
+    ServiceTicket serviceTicket = serviceTickets.FirstOrDefault(st => st.Id == id);
+    if (serviceTicket == null)
+    {
+        return Results.NotFound();
+    }
+  
+    return Results.Ok(new ServiceTicketDTO
+    {
+        Id = serviceTicket.Id,
+        CustomerId = serviceTicket.CustomerId,
+        EmployeeId = serviceTicket.EmployeeId,
+        Description = serviceTicket.Description,
+        Emergency = serviceTicket.Emergency,
+        DateCompleted = serviceTicket.DateCompleted
+    });
+});
 
 app.Run();
 
