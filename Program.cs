@@ -24,7 +24,7 @@ List<ServiceTicket> serviceTickets = new List<ServiceTicket>
         EmployeeId = 1,
         Description = "Heating system maintenance",
         Emergency = false,
-        DateCompleted = new DateOnly(2024, 6, 1)
+        DateCompleted = DateTime.Today
     },
     // Assigned to Employee 2, Incomplete
     new ServiceTicket
@@ -51,7 +51,7 @@ List<ServiceTicket> serviceTickets = new List<ServiceTicket>
         EmployeeId = 1,
         Description = "Install thermostat",
         Emergency = false,
-        DateCompleted = new DateOnly(2024, 6, 5)
+        DateCompleted = DateTime.Today
     },
     // No Employee assigned, Incomplete
     new ServiceTicket
@@ -282,6 +282,17 @@ app.MapPut("/servicetickets/{id}", (int id, ServiceTicket serviceTicket) =>
 
     return Results.NoContent();
 }); 
+
+
+// Service Ticket POST Complete Ticket
+app.MapPost("/servicetickets/{id}/complete", (int id) =>
+{  
+    ServiceTicket ticketToComplete = serviceTickets.FirstOrDefault(st => st.Id == id);
+
+    ticketToComplete.DateCompleted = DateTime.Today;
+
+    return Results.NoContent();
+});
 
 app.Run();
 
